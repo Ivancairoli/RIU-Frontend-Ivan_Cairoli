@@ -11,11 +11,28 @@
     </button>
   </div>
 
+  <mat-form-field class="filtro-superheroes" appearance="outline">
+    <mat-label>Buscar por nombre</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      type="search"
+      [value]="filtroNombre()"
+      (input)="actualizarFiltro($event)"
+      placeholder="Ingrese un nombre de superheroe"
+    />
+    @if (filtroNombre()) {
+      <button matIconButton matSuffix type="button" (click)="limpiarFiltro()">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+
   <div class="grilla-superheroes">
     @for (superheroe of superheroes(); track superheroe.id) {
       <app-tarjeta-superheroe [superheroe]="superheroe" />
     } @empty {
-      <p class="lista-vacia">Todavía no hay superhéroes para mostrar.</p>
+      <p class="lista-vacia">No se encontraron superhéroes con ese nombre.</p>
     }
   </div>
 </header>

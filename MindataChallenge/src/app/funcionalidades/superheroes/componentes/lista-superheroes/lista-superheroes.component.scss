@@ -16,6 +16,10 @@
   }
 }
 
+.filtro-superheroes {
+  width: 25rem;
+}
+
 .grilla-superheroes {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

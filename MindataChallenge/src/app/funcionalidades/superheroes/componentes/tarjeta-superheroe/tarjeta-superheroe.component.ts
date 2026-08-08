@@ -1,16 +1,14 @@
-import { ChangeDetectionStrategy, Component, inject, input, signal } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatIconModule } from '@angular/material/icon';
 
+import { MaterialModule } from '../../../../compartido/material/material.module';
 import { Superheroe } from '../../modelos/superheroe.model';
 import { AltaEdicionSuperheroeComponent } from '../modales/alta-edicion-superheroe/alta-edicion-superheroe.component';
 import { ConfirmacionEliminacionComponent } from '../modales/confirmacion-eliminacion/confirmacion-eliminacion.component';
 
 @Component({
   selector: 'app-tarjeta-superheroe',
-  imports: [MatButtonModule, MatCardModule, MatIconModule],
+  imports: [MaterialModule],
   templateUrl: './tarjeta-superheroe.component.html',
   styleUrl: './tarjeta-superheroe.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

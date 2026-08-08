@@ -1,23 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+import { MaterialModule } from '../../../../../compartido/material/material.module';
 import { NuevoSuperheroe, Superheroe } from '../../../modelos/superheroe.model';
 
 export type ResultadoAltaEdicion = NuevoSuperheroe | Superheroe;
 
 @Component({
   selector: 'app-alta-edicion-superheroe',
-  imports: [
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-  ],
+  imports: [MaterialModule, ReactiveFormsModule],
   templateUrl: './alta-edicion-superheroe.component.html',
   styleUrl: './alta-edicion-superheroe.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
