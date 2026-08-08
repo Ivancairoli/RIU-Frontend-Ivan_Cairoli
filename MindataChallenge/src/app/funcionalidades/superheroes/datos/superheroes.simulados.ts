@@ -6,7 +6,7 @@ export const SUPERHEROES_SIMULADOS: readonly Superheroe[] = [
     nombre: 'Spiderman',
     edad: 23,
     altura: 1.78,
-    urlImagen: '/imagenes/superheroes/spiderman.png',
+    urlImagen: '/imagenes/superheroes/spiderman.webp',
     descripcion:
       'Un joven héroe ágil y valiente que protege Nueva York usando sus habilidades arácnidas y su ingenio.',
   },
@@ -15,7 +15,7 @@ export const SUPERHEROES_SIMULADOS: readonly Superheroe[] = [
     nombre: 'Iron Man',
     edad: 48,
     altura: 1.85,
-    urlImagen: '/imagenes/superheroes/iron-man.png',
+    urlImagen: '/imagenes/superheroes/iron-man.webp',
     descripcion:
       'Inventor brillante y filántropo que combate las amenazas más peligrosas con una avanzada armadura tecnológica.',
   },
@@ -24,7 +24,7 @@ export const SUPERHEROES_SIMULADOS: readonly Superheroe[] = [
     nombre: 'Thor',
     edad: 1_500,
     altura: 1.98,
-    urlImagen: '/imagenes/superheroes/Thor.png',
+    urlImagen: '/imagenes/superheroes/Thor.webp',
     descripcion:
       'Dios asgardiano del trueno, protector de los nueve reinos y portador de un poder digno de las grandes leyendas.',
   },
@@ -33,7 +33,7 @@ export const SUPERHEROES_SIMULADOS: readonly Superheroe[] = [
     nombre: 'Hulk',
     edad: 49,
     altura: 2.44,
-    urlImagen: '/imagenes/superheroes/hulk.png',
+    urlImagen: '/imagenes/superheroes/hulk.webp',
     descripcion:
       'La fuerza imparable del científico Bruce Banner, capaz de superar cualquier límite cuando la situación lo exige.',
   },
@@ -42,7 +42,7 @@ export const SUPERHEROES_SIMULADOS: readonly Superheroe[] = [
     nombre: 'Black Widow',
     edad: 35,
     altura: 1.7,
-    urlImagen: '/imagenes/superheroes/black-widow.png',
+    urlImagen: '/imagenes/superheroes/black-widow.webp',
     descripcion:
       'Espía experta y estratega excepcional que enfrenta cada misión con precisión, coraje y gran capacidad táctica.',
   },
