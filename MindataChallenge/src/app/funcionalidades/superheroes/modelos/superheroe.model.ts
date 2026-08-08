@@ -6,3 +6,5 @@ export interface Superheroe {
   readonly urlImagen: string;
   readonly descripcion: string;
 }
+
+export type NuevoSuperheroe = Omit<Superheroe, 'id'>;

@@ -5,9 +5,8 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import { Superheroe } from '../../../modelos/superheroe.model';
+import { NuevoSuperheroe, Superheroe } from '../../../modelos/superheroe.model';
 
-export type NuevoSuperheroe = Omit<Superheroe, 'id'>;
 export type ResultadoAltaEdicion = NuevoSuperheroe | Superheroe;
 
 @Component({

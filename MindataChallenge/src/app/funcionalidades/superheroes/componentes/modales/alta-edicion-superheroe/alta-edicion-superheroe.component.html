@@ -46,7 +46,7 @@
 
 <mat-dialog-actions align="end">
   <button matButton mat-dialog-close>Cancelar</button>
-  <button matButton="filled" type="submit">
+  <button matButton="filled" type="submit" [disabled]="formulario.invalid">
     {{ esEdicion ? 'Guardar' : 'Agregar' }}
   </button>
 </mat-dialog-actions>
