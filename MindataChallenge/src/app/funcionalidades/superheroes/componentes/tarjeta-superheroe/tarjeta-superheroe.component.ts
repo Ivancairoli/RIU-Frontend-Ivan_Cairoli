@@ -5,8 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 
 import { Superheroe } from '../../modelos/superheroe.model';
+import { AltaEdicionSuperheroeComponent } from '../modales/alta-edicion-superheroe/alta-edicion-superheroe.component';
 import { ConfirmacionEliminacionComponent } from '../modales/confirmacion-eliminacion/confirmacion-eliminacion.component';
-import { EdicionSuperheroeComponent } from '../modales/edicion-superheroe/edicion-superheroe.component';
 
 @Component({
   selector: 'app-tarjeta-superheroe',
@@ -19,13 +19,13 @@ export class TarjetaSuperheroeComponent {
   private readonly modal = inject(MatDialog);
   public readonly superheroe = input.required<Superheroe>();
 
-  abrirEdicion(): void {
-    this.modal.open(EdicionSuperheroeComponent, {
+  public abrirEdicion(): void {
+    this.modal.open(AltaEdicionSuperheroeComponent, {
       data: this.superheroe(),
     });
   }
 
-  abrirConfirmacionEliminacion(): void {
+  public abrirConfirmacionEliminacion(): void {
     const { id, nombre } = this.superheroe();
 
     this.modal.open(ConfirmacionEliminacionComponent, {

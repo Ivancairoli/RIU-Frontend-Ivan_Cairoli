@@ -4,6 +4,11 @@
       <h2 class="titulo-lista">Superhéroes</h2>
       <p class="descripcion-lista">{{ superheroes().length }} héroes disponibles</p>
     </div>
+
+    <button matButton="filled" type="button" (click)="abrirModalCreacion()">
+      <mat-icon aria-hidden="true">add</mat-icon>
+      Agregar superhéroe
+    </button>
   </div>
 
   <div class="grilla-superheroes">
