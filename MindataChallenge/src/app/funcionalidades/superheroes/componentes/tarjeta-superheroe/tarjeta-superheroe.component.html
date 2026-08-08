@@ -1,13 +1,6 @@
 <mat-card class="tarjeta-superheroe">
   <div class="imagen-superheroe">
-    @if (!imagenNoDisponible()) {
-      <img [src]="superheroe().urlImagen" />
-    } @else {
-      <div class="imagen-pendiente">
-        <mat-icon aria-hidden="true">person</mat-icon>
-        <span>Imagen pendiente</span>
-      </div>
-    }
+    <img [src]="superheroe().urlImagen" />
   </div>
 
   <mat-card-header>
@@ -28,4 +21,15 @@
 
     <p>{{ superheroe().descripcion }}</p>
   </mat-card-content>
+
+  <mat-card-actions class="acciones" align="end">
+    <button matButton type="button" (click)="abrirEdicion()">
+      <mat-icon>edit</mat-icon>
+      Editar
+    </button>
+    <button matButton type="button" (click)="abrirConfirmacionEliminacion()">
+      <mat-icon class="btn-trash">delete</mat-icon>
+      Eliminar
+    </button>
+  </mat-card-actions>
 </mat-card>

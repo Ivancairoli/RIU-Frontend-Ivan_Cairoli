@@ -59,3 +59,12 @@
     background: var(--mat-sys-surface-container);
   }
 }
+
+.acciones {
+  margin-top: auto;
+  padding: 0 1rem 1rem;
+}
+
+.btn-trash {
+  color: var(--mat-sys-error);
+}
