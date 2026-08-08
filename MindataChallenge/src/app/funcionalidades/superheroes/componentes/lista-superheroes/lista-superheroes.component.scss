@@ -1,0 +1,30 @@
+.titulo-lista-superheroes {
+  max-width: 75rem;
+  width: auto;
+  margin: 0 auto;
+}
+
+.encabezado-lista {
+  margin-bottom: 1.25rem;
+
+  .titulo-lista {
+    margin: 0;
+    font-weight: 700;
+  }
+}
+
+.grilla-superheroes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.lista-vacia {
+  grid-column: 1 / -1;
+  padding: 3rem;
+  border: 1px dashed var(--mat-sys-outline);
+  border-radius: 1rem;
+  color: var(--mat-sys-on-surface-variant);
+  text-align: center;
+}
