@@ -1,10 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { take } from 'rxjs';
 
 import { MaterialModule } from '../../../../compartido/material/material.module';
 import { Superheroe } from '../../modelos/superheroe.model';
-import { AltaEdicionSuperheroeComponent } from '../modales/alta-edicion-superheroe/alta-edicion-superheroe.component';
-import { ConfirmacionEliminacionComponent } from '../modales/confirmacion-eliminacion/confirmacion-eliminacion.component';
+import { ServicioSuperheroes } from '../../servicios/superheroes.service';
+import {
+  AltaEdicionSuperheroeComponent,
+  ResultadoAltaEdicion,
+} from '../modales/alta-edicion-superheroe/alta-edicion-superheroe.component';
+import {
+  ConfirmacionEliminacionComponent,
+  SuperheroeAEliminar,
+} from '../modales/confirmacion-eliminacion/confirmacion-eliminacion.component';
 
 @Component({
   selector: 'app-tarjeta-superheroe',
@@ -15,19 +23,42 @@ import { ConfirmacionEliminacionComponent } from '../modales/confirmacion-elimin
 })
 export class TarjetaSuperheroeComponent {
   private readonly modal = inject(MatDialog);
+  private readonly servicioSuperheroes = inject(ServicioSuperheroes);
   public readonly superheroe = input.required<Superheroe>();
 
   public abrirEdicion(): void {
-    this.modal.open(AltaEdicionSuperheroeComponent, {
-      data: this.superheroe(),
-    });
+    const referenciaModal = this.modal.open<
+      AltaEdicionSuperheroeComponent,
+      Superheroe,
+      ResultadoAltaEdicion
+    >(AltaEdicionSuperheroeComponent, { data: this.superheroe() });
+
+    referenciaModal
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((resultado) => {
+        if (resultado && 'id' in resultado) {
+          this.servicioSuperheroes.modificarSuperheroe(resultado);
+        }
+      });
   }
 
   public abrirConfirmacionEliminacion(): void {
     const { id, nombre } = this.superheroe();
 
-    this.modal.open(ConfirmacionEliminacionComponent, {
-      data: { id, nombre },
-    });
+    const referenciaModal = this.modal.open<
+      ConfirmacionEliminacionComponent,
+      SuperheroeAEliminar,
+      boolean
+    >(ConfirmacionEliminacionComponent, { data: { id, nombre } });
+
+    referenciaModal
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((confirmado) => {
+        if (confirmado) {
+          this.servicioSuperheroes.eliminarSuperheroe(id);
+        }
+      });
   }
 }

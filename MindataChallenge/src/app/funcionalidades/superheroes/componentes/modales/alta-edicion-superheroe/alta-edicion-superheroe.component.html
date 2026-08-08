@@ -1,7 +1,12 @@
 <h2 mat-dialog-title>{{ esEdicion ? 'Editar superheroe' : 'Agregar superheroe' }}</h2>
 
 <mat-dialog-content>
-  <form class="formulario-alta-edicion" [formGroup]="formulario" (ngSubmit)="guardar()">
+  <form
+    id="formulario-alta-edicion"
+    class="formulario-alta-edicion"
+    [formGroup]="formulario"
+    (ngSubmit)="guardar()"
+  >
     <mat-form-field appearance="outline">
       <mat-label>Nombre</mat-label>
       <input matInput formControlName="nombre" />
@@ -46,7 +51,12 @@
 
 <mat-dialog-actions align="end">
   <button matButton mat-dialog-close>Cancelar</button>
-  <button matButton="filled" type="submit" [disabled]="formulario.invalid">
+  <button
+    matButton="filled"
+    type="submit"
+    form="formulario-alta-edicion"
+    [disabled]="formulario.invalid"
+  >
     {{ esEdicion ? 'Guardar' : 'Agregar' }}
   </button>
 </mat-dialog-actions>

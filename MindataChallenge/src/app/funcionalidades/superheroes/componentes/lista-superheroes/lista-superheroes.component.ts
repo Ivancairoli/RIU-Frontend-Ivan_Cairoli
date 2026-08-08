@@ -1,9 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { take } from 'rxjs';
 
 import { MaterialModule } from '../../../../compartido/material/material.module';
+import { Superheroe } from '../../modelos/superheroe.model';
 import { ServicioSuperheroes } from '../../servicios/superheroes.service';
-import { AltaEdicionSuperheroeComponent } from '../modales/alta-edicion-superheroe/alta-edicion-superheroe.component';
+import {
+  AltaEdicionSuperheroeComponent,
+  ResultadoAltaEdicion,
+} from '../modales/alta-edicion-superheroe/alta-edicion-superheroe.component';
 import { TarjetaSuperheroeComponent } from '../tarjeta-superheroe/tarjeta-superheroe.component';
 
 @Component({
@@ -31,8 +36,23 @@ export class ListaSuperheroesComponent {
   }
 
   public abrirModalCreacion(): void {
-    this.modal.open(AltaEdicionSuperheroeComponent, {
-      data: null,
-    });
+    const referenciaModal = this.modal.open<
+      AltaEdicionSuperheroeComponent,
+      null,
+      ResultadoAltaEdicion
+    >(AltaEdicionSuperheroeComponent, { data: null });
+
+    referenciaModal
+      .afterClosed()
+      .pipe(take(1))
+      .subscribe((resultado) => {
+        if (resultado && !this.esSuperheroeExistente(resultado)) {
+          this.servicioSuperheroes.registrar(resultado);
+        }
+      });
+  }
+
+  private esSuperheroeExistente(resultado: ResultadoAltaEdicion): resultado is Superheroe {
+    return 'id' in resultado;
   }
 }
