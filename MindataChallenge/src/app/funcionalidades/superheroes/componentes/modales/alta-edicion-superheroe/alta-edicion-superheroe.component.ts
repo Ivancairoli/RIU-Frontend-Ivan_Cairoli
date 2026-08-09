@@ -27,8 +27,8 @@ export class AltaEdicionSuperheroeComponent {
   public readonly errorImagen = signal('');
   public readonly formulario = this.constructorFormulario.nonNullable.group({
     nombre: [this.superheroe?.nombre ?? '', Validators.required],
-    edad: [this.superheroe?.edad ?? 0, [Validators.required, Validators.min(0)]],
-    altura: [this.superheroe?.altura ?? 0, [Validators.required, Validators.min(0.1)]],
+    edad: [this.superheroe?.edad ?? null, [Validators.required, Validators.min(0)]],
+    altura: [this.superheroe?.altura ?? null, [Validators.required, Validators.min(0.1)]],
     urlImagen: [this.superheroe?.urlImagen ?? '', Validators.required],
     descripcion: [this.superheroe?.descripcion ?? '', Validators.required],
   });
