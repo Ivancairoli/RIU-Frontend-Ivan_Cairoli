@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 
 import { NuevoSuperheroe, Superheroe } from '../../modelos/superheroe.model';
 import { ServicioSuperheroes } from '../../servicios/superheroes.service';
+import { NotificacionesService } from '../../../../compartido/servicios/notificaciones.service';
 import { ListaSuperheroesComponent } from './lista-superheroes.component';
 
 describe('ListaSuperheroesComponent', () => {
@@ -28,18 +29,25 @@ describe('ListaSuperheroesComponent', () => {
       .and.callFake((nuevo: NuevoSuperheroe) => of({ id: 5, ...nuevo })),
   };
   const modal = { open: jasmine.createSpy('open') };
+  const notificaciones = {
+    exito: jasmine.createSpy('exito'),
+    error: jasmine.createSpy('error'),
+  };
 
   beforeEach(() => {
     servicio.consultarTodos.calls.reset();
     servicio.consultarPorNombre.calls.reset();
     servicio.registrar.calls.reset();
     modal.open.calls.reset();
+    notificaciones.exito.calls.reset();
+    notificaciones.error.calls.reset();
     estado.set(superheroes);
     TestBed.configureTestingModule({
       imports: [ListaSuperheroesComponent],
       providers: [
         { provide: ServicioSuperheroes, useValue: servicio },
         { provide: MatDialog, useValue: modal },
+        { provide: NotificacionesService, useValue: notificaciones },
       ],
     }).overrideComponent(ListaSuperheroesComponent, {
       set: {
@@ -47,6 +55,7 @@ describe('ListaSuperheroesComponent', () => {
         providers: [
           { provide: ServicioSuperheroes, useValue: servicio },
           { provide: MatDialog, useValue: modal },
+          { provide: NotificacionesService, useValue: notificaciones },
         ],
       },
     });
@@ -93,5 +102,6 @@ describe('ListaSuperheroesComponent', () => {
 
     expect(modal.open).toHaveBeenCalledTimes(1);
     expect(servicio.registrar).toHaveBeenCalledWith(nuevo);
+    expect(notificaciones.exito).toHaveBeenCalledWith('Superhéroe creado correctamente.');
   });
 });

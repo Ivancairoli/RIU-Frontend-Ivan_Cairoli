@@ -5,6 +5,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { debounceTime, distinctUntilChanged, startWith, Subject, switchMap, take } from 'rxjs';
 
 import { MaterialModule } from '../../../../compartido/material/material.module';
+import { NotificacionesService } from '../../../../compartido/servicios/notificaciones.service';
 import { Superheroe } from '../../modelos/superheroe.model';
 import { ServicioSuperheroes } from '../../servicios/superheroes.service';
 import {
@@ -23,6 +24,7 @@ import { TarjetaSuperheroeComponent } from '../tarjeta-superheroe/tarjeta-superh
 export class ListaSuperheroesComponent {
   private readonly servicioSuperheroes = inject(ServicioSuperheroes);
   private readonly modal = inject(MatDialog);
+  private readonly notificaciones = inject(NotificacionesService);
   private readonly cambiosFiltro = new Subject<string>();
   public readonly filtroNombre = signal('');
   public readonly superheroes = this.servicioSuperheroes.superheroes;
@@ -81,7 +83,13 @@ export class ListaSuperheroesComponent {
       .pipe(take(1))
       .subscribe((resultado) => {
         if (resultado && !this.esSuperheroeExistente(resultado)) {
-          this.servicioSuperheroes.registrar(resultado).pipe(take(1)).subscribe();
+          this.servicioSuperheroes
+            .registrar(resultado)
+            .pipe(take(1))
+            .subscribe({
+              next: () => this.notificaciones.exito('Superhéroe creado correctamente.'),
+              error: () => this.notificaciones.error('No se pudo crear el superhéroe.'),
+            });
         }
       });
   }

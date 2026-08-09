@@ -23,3 +23,15 @@ body {
   margin: 0;
   height: 100%;
 }
+
+.toast-exito {
+  --mat-snack-bar-container-color: #146c2e;
+  --mat-snack-bar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #ffffff;
+}
+
+.toast-error {
+  --mat-snack-bar-container-color: #b3261e;
+  --mat-snack-bar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #ffffff;
+}

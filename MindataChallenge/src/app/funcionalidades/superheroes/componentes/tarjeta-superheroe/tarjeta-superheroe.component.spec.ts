@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 
 import { Superheroe } from '../../modelos/superheroe.model';
 import { ServicioSuperheroes } from '../../servicios/superheroes.service';
+import { NotificacionesService } from '../../../../compartido/servicios/notificaciones.service';
 import { TarjetaSuperheroeComponent } from './tarjeta-superheroe.component';
 
 describe('TarjetaSuperheroeComponent', () => {
@@ -20,16 +21,23 @@ describe('TarjetaSuperheroeComponent', () => {
     eliminarSuperheroe: jasmine.createSpy('eliminarSuperheroe').and.returnValue(of(true)),
   };
   const modal = { open: jasmine.createSpy('open') };
+  const notificaciones = {
+    exito: jasmine.createSpy('exito'),
+    error: jasmine.createSpy('error'),
+  };
 
   beforeEach(() => {
     servicio.modificarSuperheroe.calls.reset();
     servicio.eliminarSuperheroe.calls.reset();
     modal.open.calls.reset();
+    notificaciones.exito.calls.reset();
+    notificaciones.error.calls.reset();
     TestBed.configureTestingModule({
       imports: [TarjetaSuperheroeComponent],
       providers: [
         { provide: ServicioSuperheroes, useValue: servicio },
         { provide: MatDialog, useValue: modal },
+        { provide: NotificacionesService, useValue: notificaciones },
       ],
     }).overrideComponent(TarjetaSuperheroeComponent, {
       set: {
@@ -37,6 +45,7 @@ describe('TarjetaSuperheroeComponent', () => {
         providers: [
           { provide: ServicioSuperheroes, useValue: servicio },
           { provide: MatDialog, useValue: modal },
+          { provide: NotificacionesService, useValue: notificaciones },
         ],
       },
     });
@@ -49,6 +58,7 @@ describe('TarjetaSuperheroeComponent', () => {
     fixture.componentRef.setInput('superheroe', superheroe);
     fixture.componentInstance.abrirEdicion();
     expect(servicio.modificarSuperheroe).toHaveBeenCalledWith(modificado);
+    expect(notificaciones.exito).toHaveBeenCalledWith('Superhéroe editado correctamente.');
   });
 
   it('Elimina el superhéroe únicamente después de confirmarlo', () => {
@@ -58,5 +68,6 @@ describe('TarjetaSuperheroeComponent', () => {
     fixture.componentInstance.abrirConfirmacionEliminacion();
     expect(modal.open).toHaveBeenCalledTimes(1);
     expect(servicio.eliminarSuperheroe).toHaveBeenCalledWith(superheroe.id);
+    expect(notificaciones.exito).toHaveBeenCalledWith('Superhéroe eliminado correctamente.');
   });
 });

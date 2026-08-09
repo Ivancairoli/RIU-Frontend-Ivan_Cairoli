@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorIntl, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { PaginadorEspanolService } from './paginador-espanol.service';
 
@@ -20,6 +21,7 @@ import { PaginadorEspanolService } from './paginador-espanol.service';
     MatInputModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
   exports: [
     MatButtonModule,
@@ -30,6 +32,7 @@ import { PaginadorEspanolService } from './paginador-espanol.service';
     MatInputModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
   providers: [{ provide: MatPaginatorIntl, useClass: PaginadorEspanolService }],
 })
