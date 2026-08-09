@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs';
-
 import { MaterialModule } from '../../../../compartido/material/material.module';
 import { Superheroe } from '../../modelos/superheroe.model';
 import { ServicioSuperheroes } from '../../servicios/superheroes.service';
@@ -38,7 +37,7 @@ export class TarjetaSuperheroeComponent {
       .pipe(take(1))
       .subscribe((resultado) => {
         if (resultado && 'id' in resultado) {
-          this.servicioSuperheroes.modificarSuperheroe(resultado);
+          this.servicioSuperheroes.modificarSuperheroe(resultado).pipe(take(1)).subscribe();
         }
       });
   }
@@ -57,7 +56,7 @@ export class TarjetaSuperheroeComponent {
       .pipe(take(1))
       .subscribe((confirmado) => {
         if (confirmado) {
-          this.servicioSuperheroes.eliminarSuperheroe(id);
+          this.servicioSuperheroes.eliminarSuperheroe(id).pipe(take(1)).subscribe();
         }
       });
   }

@@ -1,66 +1,77 @@
-import { Injectable, signal } from '@angular/core';
-import { SUPERHEROES_SIMULADOS } from '../datos/superheroes.simulados';
-import { IAdministrarSuperheroes } from './interfaces/administrar-superheroes.interface';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { inject, Injectable, signal } from '@angular/core';
+import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
+
 import { NuevoSuperheroe, Superheroe } from '../modelos/superheroe.model';
+import { IAdministrarSuperheroes } from './interfaces/administrar-superheroes.interface';
 
 @Injectable({ providedIn: 'root' })
 export class ServicioSuperheroes implements IAdministrarSuperheroes {
-  private readonly estadoSuperheroes = signal<readonly Superheroe[]>(SUPERHEROES_SIMULADOS);
+  private readonly http = inject(HttpClient);
+  private readonly urlApi = 'api/superheroes';
+  private readonly estadoSuperheroes = signal<readonly Superheroe[]>([]);
+
   readonly superheroes = this.estadoSuperheroes.asReadonly();
 
-  public registrar(nuevoSuperheroe: NuevoSuperheroe): Superheroe {
-    const superheroeRegistrado: Superheroe = {
-      id: this.obtenerSiguienteId(),
-      ...nuevoSuperheroe,
-    };
-    this.estadoSuperheroes.update((superheroes) => [...superheroes, superheroeRegistrado]);
-    return superheroeRegistrado;
+  public registrar(nuevoSuperheroe: NuevoSuperheroe): Observable<Superheroe> {
+    return this.http
+      .post<Superheroe>(this.urlApi, nuevoSuperheroe)
+      .pipe(
+        tap((registrado) =>
+          this.estadoSuperheroes.update((superheroes) => [...superheroes, registrado]),
+        ),
+      );
   }
 
-  public consultarTodos(): readonly Superheroe[] {
-    return this.estadoSuperheroes();
+  public consultarTodos(): Observable<readonly Superheroe[]> {
+    return this.http
+      .get<Superheroe[]>(this.urlApi)
+      .pipe(tap((superheroes) => this.estadoSuperheroes.set(superheroes)));
   }
 
-  public consultarPorId(id: number): Superheroe | null {
-    return this.estadoSuperheroes().find((superheroe) => superheroe.id === id) ?? null;
+  public consultarPorId(id: number): Observable<Superheroe | null> {
+    return this.http
+      .get<Superheroe>(`${this.urlApi}/${id}`)
+      .pipe(
+        catchError((error: HttpErrorResponse) =>
+          error.status === 404 ? of(null) : throwError(() => error),
+        ),
+      );
   }
 
-  public consultarPorNombre(nombre: string): readonly Superheroe[] {
-    const nombreBuscado = this.normalizarTexto(nombre.trim());
-    return this.estadoSuperheroes().filter((superheroe) =>
-      this.normalizarTexto(superheroe.nombre).includes(nombreBuscado),
+  public consultarPorNombre(nombre: string): Observable<readonly Superheroe[]> {
+    const parametros = new HttpParams().set('nombre', nombre.trim());
+
+    return this.http
+      .get<Superheroe[]>(this.urlApi, { params: parametros })
+      .pipe(tap((superheroes) => this.estadoSuperheroes.set(superheroes)));
+  }
+
+  public modificarSuperheroe(superheroe: Superheroe): Observable<Superheroe | null> {
+    return this.http.put<void>(`${this.urlApi}/${superheroe.id}`, superheroe).pipe(
+      map(() => superheroe),
+      tap((modificado) =>
+        this.estadoSuperheroes.update((superheroes) =>
+          superheroes.map((actual) => (actual.id === modificado.id ? modificado : actual)),
+        ),
+      ),
+      catchError((error: HttpErrorResponse) =>
+        error.status === 404 ? of(null) : throwError(() => error),
+      ),
     );
   }
 
-  public modificarSuperheroe(superheroe: Superheroe): Superheroe | null {
-    if (!this.consultarPorId(superheroe.id)) {
-      return null;
-    }
-    this.estadoSuperheroes.update((superheroes) =>
-      superheroes.map((actual) => (actual.id === superheroe.id ? superheroe : actual)),
+  public eliminarSuperheroe(id: number): Observable<boolean> {
+    return this.http.delete<void>(`${this.urlApi}/${id}`).pipe(
+      tap(() =>
+        this.estadoSuperheroes.update((superheroes) =>
+          superheroes.filter((superheroe) => superheroe.id !== id),
+        ),
+      ),
+      map(() => true),
+      catchError((error: HttpErrorResponse) =>
+        error.status === 404 ? of(false) : throwError(() => error),
+      ),
     );
-    return superheroe;
-  }
-
-  public eliminarSuperheroe(id: number): boolean {
-    if (!this.consultarPorId(id)) {
-      return false;
-    }
-    this.estadoSuperheroes.update((superheroes) =>
-      superheroes.filter((superheroe) => superheroe.id !== id),
-    );
-    return true;
-  }
-
-  private obtenerSiguienteId(): number {
-    const ids = this.estadoSuperheroes().map((superheroe) => superheroe.id);
-    return Math.max(0, ...ids) + 1;
-  }
-
-  private normalizarTexto(texto: string): string {
-    return texto
-      .normalize('NFD')
-      .replace(/\p{Diacritic}/gu, '')
-      .toLocaleLowerCase('es');
   }
 }
