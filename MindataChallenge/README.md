@@ -36,6 +36,22 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
+## Docker
+
+Build the production image:
+
+```bash
+docker build -t mindata-challenge .
+```
+
+Run the container and open `http://localhost:8080`:
+
+```bash
+docker run --rm -p 8080:80 --name mindata-challenge mindata-challenge
+```
+
+The image uses Node.js only during compilation. The final image serves the generated static files with Nginx and supports Angular client-side routes.
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
