@@ -8,4 +8,10 @@ describe('App', () => {
       imports: [App],
     }).compileComponents();
   });
+
+  it('crea la aplicación', () => {
+    const fixture = TestBed.createComponent(App);
+
+    expect(fixture.componentInstance).toBeTruthy();
+  });
 });
