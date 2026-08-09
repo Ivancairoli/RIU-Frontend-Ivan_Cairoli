@@ -1,20 +1,13 @@
-:host {
-  display: block;
-  height: 100%;
-}
-
 .tarjeta-superheroe {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow: hidden;
-  border-color: var(--mat-sys-outline-variant);
+  border: 1px solid var(--mat-sys-outline-variant);
   border-radius: 1.25rem;
   background: var(--mat-sys-surface-container-low);
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease;
 
   &:hover {
-    transform: translateY(-0.25rem);
     box-shadow: var(--mat-sys-level2);
   }
 }
@@ -23,48 +16,79 @@
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--mat-sys-surface-container-highest);
-
-  img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-  }
 }
 
-.imagen-pendiente {
+.imagen-superheroe-archivo {
+  display: block;
   width: 100%;
   height: 100%;
-  display: grid;
-  place-content: center;
-  justify-items: center;
-  gap: 0.5rem;
-  color: var(--mat-sys-on-surface-variant);
-  background: linear-gradient(
-    145deg,
-    var(--mat-sys-surface-container),
-    var(--mat-sys-primary-container)
-  );
+  object-fit: cover;
+}
+
+.encabezado-tarjeta {
+  padding: 1.25rem 1.25rem 0;
+}
+
+.nombre-superheroe {
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-title-large);
+  font-weight: 700;
+}
+
+.contenido-tarjeta {
+  flex: 1;
+  padding: 1rem 1.25rem 0;
 }
 
 .datos-superheroe {
   display: flex;
   gap: 0.75rem;
   margin: 0;
+}
 
-  div {
-    flex: 1;
-    padding: 0.65rem 0.75rem;
-    border-radius: 0.75rem;
-    background: var(--mat-sys-surface-container);
-  }
+.dato-superheroe {
+  flex: 1;
+  min-width: 0;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 0.8rem;
+  background: var(--mat-sys-surface-container);
+}
+
+.dato-superheroe-etiqueta {
+  margin-bottom: 0.15rem;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-label-medium);
+}
+
+.dato-superheroe-valor {
+  margin: 0;
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-title-small);
+  font-weight: 650;
+}
+
+.descripcion-superheroe {
+  margin: 1rem 0 0;
+  overflow: hidden;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-medium);
 }
 
 .acciones {
+  gap: 0.25rem;
   margin-top: auto;
-  padding: 0 1rem 1rem;
+  padding: 1rem 1.25rem 1.25rem;
 }
 
-.btn-trash {
+.boton-accion {
+  border-radius: 0.75rem;
+}
+
+.boton-editar {
+  color: var(--mat-sys-primary);
+}
+
+.icono-eliminar {
   color: var(--mat-sys-error);
 }

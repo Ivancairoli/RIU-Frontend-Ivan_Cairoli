@@ -1,34 +1,43 @@
 <mat-card class="tarjeta-superheroe">
   <div class="imagen-superheroe">
-    <img [src]="superheroe().urlImagen" />
+    <img
+      class="imagen-superheroe-archivo"
+      [src]="superheroe().urlImagen"
+      [alt]="'Imagen de ' + superheroe().nombre"
+    />
   </div>
 
-  <mat-card-header>
-    <mat-card-title>{{ superheroe().nombre }}</mat-card-title>
+  <mat-card-header class="encabezado-tarjeta">
+    <mat-card-title class="nombre-superheroe">{{ superheroe().nombre }}</mat-card-title>
   </mat-card-header>
 
-  <mat-card-content>
+  <mat-card-content class="contenido-tarjeta">
     <dl class="datos-superheroe">
-      <div>
-        <dt>Edad</dt>
-        <dd>{{ superheroe().edad }} años</dd>
+      <div class="dato-superheroe">
+        <dt class="dato-superheroe-etiqueta">Edad</dt>
+        <dd class="dato-superheroe-valor">{{ superheroe().edad }} años</dd>
       </div>
-      <div>
-        <dt>Altura</dt>
-        <dd>{{ superheroe().altura }} m</dd>
+      <div class="dato-superheroe">
+        <dt class="dato-superheroe-etiqueta">Altura</dt>
+        <dd class="dato-superheroe-valor">{{ superheroe().altura }} m</dd>
       </div>
     </dl>
 
-    <p>{{ superheroe().descripcion }}</p>
+    <p class="descripcion-superheroe">{{ superheroe().descripcion }}</p>
   </mat-card-content>
 
   <mat-card-actions class="acciones" align="end">
-    <button matButton type="button" (click)="abrirEdicion()">
+    <button class="boton-accion boton-editar" matButton type="button" (click)="abrirEdicion()">
       <mat-icon>edit</mat-icon>
       Editar
     </button>
-    <button matButton type="button" (click)="abrirConfirmacionEliminacion()">
-      <mat-icon class="btn-trash">delete</mat-icon>
+    <button
+      class="boton-accion boton-eliminar"
+      matButton
+      type="button"
+      (click)="abrirConfirmacionEliminacion()"
+    >
+      <mat-icon class="icono-eliminar">delete</mat-icon>
       Eliminar
     </button>
   </mat-card-actions>

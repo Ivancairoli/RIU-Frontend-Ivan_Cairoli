@@ -1,11 +1,11 @@
 <header class="titulo-lista-superheroes">
   <div class="encabezado-lista">
-    <div>
+    <div class="resumen-lista">
       <h2 class="titulo-lista">Superhéroes</h2>
       <p class="descripcion-lista">{{ superheroes().length }} héroes disponibles</p>
     </div>
 
-    <button matButton="filled" type="button" (click)="abrirModalCreacion()">
+    <button class="boton-agregar" matButton="filled" type="button" (click)="abrirModalCreacion()">
       <mat-icon aria-hidden="true">add</mat-icon>
       Agregar superhéroe
     </button>
@@ -22,7 +22,13 @@
       placeholder="Ingrese un nombre de superheroe"
     />
     @if (filtroNombre()) {
-      <button matIconButton matSuffix type="button" (click)="limpiarFiltro()">
+      <button
+        class="boton-limpiar-filtro"
+        matIconButton
+        matSuffix
+        type="button"
+        (click)="limpiarFiltro()"
+      >
         <mat-icon>close</mat-icon>
       </button>
     }
@@ -30,7 +36,7 @@
 
   <div class="grilla-superheroes">
     @for (superheroe of superheroesPaginados(); track superheroe.id) {
-      <app-tarjeta-superheroe [superheroe]="superheroe" />
+      <app-tarjeta-superheroe class="item-superheroe" [superheroe]="superheroe" />
     } @empty {
       <p class="lista-vacia">No se encontraron superhéroes con ese nombre.</p>
     }

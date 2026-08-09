@@ -1,41 +1,101 @@
 .titulo-lista-superheroes {
-  max-width: 75rem;
-  width: auto;
+  width: min(calc(100% - 2rem), 75rem);
   margin: 0 auto;
+  padding: 2rem 0 3rem;
 }
 
 .encabezado-lista {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.25rem;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
 
-  .titulo-lista {
-    margin: 0;
-    font-weight: 700;
-  }
+.resumen-lista {
+  min-width: 0;
+}
+
+.titulo-lista {
+  margin: 0;
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-headline-medium);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.descripcion-lista {
+  margin: 0.35rem 0 0;
+  color: var(--mat-sys-on-surface-variant);
+  font: var(--mat-sys-body-large);
+}
+
+.boton-agregar {
+  flex: 0 0 auto;
+  min-height: 2.75rem;
+  border-radius: 0.8rem;
 }
 
 .filtro-superheroes {
-  width: 25rem;
+  width: min(100%, 28rem);
+  margin-bottom: 0.25rem;
+}
+
+.boton-limpiar-filtro {
+  color: var(--mat-sys-on-surface-variant);
 }
 
 .grilla-superheroes {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
   align-items: stretch;
+}
+
+.item-superheroe {
+  min-width: 0;
 }
 
 .lista-vacia {
   grid-column: 1 / -1;
-  padding: 3rem;
+  margin: 0;
+  padding: 4rem 1.5rem;
   border: 1px dashed var(--mat-sys-outline);
   border-radius: 1rem;
   color: var(--mat-sys-on-surface-variant);
+  background: var(--mat-sys-surface-container-low);
   text-align: center;
 }
 
 .paginador-superheroes {
   margin-top: 2rem;
+  overflow: hidden;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1rem;
+  background: var(--mat-sys-surface-container-low);
+}
+
+@media screen and (max-width: 600px) {
+  .titulo-lista-superheroes {
+    width: min(calc(100% - 1.25rem), 75rem);
+    padding-top: 1.25rem;
+  }
+
+  .encabezado-lista {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .boton-agregar {
+    width: 100%;
+  }
+
+  .grilla-superheroes {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .paginador-superheroes {
+    margin-top: 1.25rem;
+  }
 }
