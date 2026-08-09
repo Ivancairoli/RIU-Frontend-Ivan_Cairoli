@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+import { MayusculasDirective } from '../../../../../compartido/directivas/mayusculas.directive';
 import { MaterialModule } from '../../../../../compartido/material/material.module';
 import { NuevoSuperheroe, Superheroe } from '../../../modelos/superheroe.model';
 
@@ -9,7 +10,7 @@ export type ResultadoAltaEdicion = NuevoSuperheroe | Superheroe;
 
 @Component({
   selector: 'app-alta-edicion-superheroe',
-  imports: [MaterialModule, ReactiveFormsModule],
+  imports: [MaterialModule, MayusculasDirective, ReactiveFormsModule],
   templateUrl: './alta-edicion-superheroe.component.html',
   styleUrl: './alta-edicion-superheroe.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
