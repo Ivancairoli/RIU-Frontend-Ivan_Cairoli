@@ -24,3 +24,12 @@ Aclaración sobre el scaffolding:
 El proyecto está organizado por funcionalidades y responsabilidades. La funcionalidad principal de superhéroes se encuentra aislada como un módulo de los elementos compartidos.
 
 Los elementos compartidos hacen referencia a cosas que se podrían utilizar entre módulos pero en este proyecto solamente se cuenta con 1 solo módulo y es el de gestión de superheroes.
+
+En una funcionalidad suelo colocar 4 carpetas generalmente haciendo referencia:
+
+Componentes: Contiene los componentes del módulo específico
+Servicios: Contiene el/los servicios que posea ese módulo específico
+Modelos: todos los modelos utilizados en ese modulo
+Datos: Archivos para mockeo del modulo
+
+y una carpeta generalmente llamada views o vistas (este proyecto no la posee) que guarda especificamente la vista principal en caso de que dicha vista redirija a otros submodulos.
