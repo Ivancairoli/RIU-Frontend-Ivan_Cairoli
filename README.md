@@ -33,3 +33,7 @@ Modelos: todos los modelos utilizados en ese modulo
 Datos: Archivos para mockeo del modulo
 
 y una carpeta generalmente llamada views o vistas (este proyecto no la posee) que guarda especificamente la vista principal en caso de que dicha vista redirija a otros submodulos.
+
+Para levantar el aplicativo con docker:
+
+1) docker compose up -d
