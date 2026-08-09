@@ -29,10 +29,23 @@
   </mat-form-field>
 
   <div class="grilla-superheroes">
-    @for (superheroe of superheroes(); track superheroe.id) {
+    @for (superheroe of superheroesPaginados(); track superheroe.id) {
       <app-tarjeta-superheroe [superheroe]="superheroe" />
     } @empty {
       <p class="lista-vacia">No se encontraron superhéroes con ese nombre.</p>
     }
   </div>
+
+  @if (superheroes().length > 0) {
+    <mat-paginator
+      [length]="superheroes().length"
+      [pageIndex]="indicePagina()"
+      [pageSize]="cantidadPorPagina()"
+      [pageSizeOptions]="opcionesCantidad"
+      showFirstLastButtons
+      aria-label="Seleccionar página de superhéroes"
+      (page)="cambiarPagina($event)"
+      class="paginador-superheroes"
+    />
+  }
 </header>

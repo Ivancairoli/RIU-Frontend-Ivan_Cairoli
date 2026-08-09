@@ -46,4 +46,40 @@ export const SUPERHEROES_SIMULADOS: readonly Superheroe[] = [
     descripcion:
       'Espía experta y estratega excepcional que enfrenta cada misión con precisión, coraje y gran capacidad táctica.',
   },
+  {
+    id: 6,
+    nombre: 'Capitan America',
+    edad: 105,
+    altura: 1.88,
+    urlImagen: '/imagenes/superheroes/capitan-america.webp',
+    descripcion:
+      'Un supersoldado reconocido por su liderazgo, valentía y compromiso inquebrantable con la justicia.',
+  },
+  {
+    id: 7,
+    nombre: 'Doctor Strange',
+    edad: 42,
+    altura: 1.88,
+    urlImagen: '/imagenes/superheroes/doctor-strange.webp',
+    descripcion:
+      'Maestro de las artes místicas encargado de proteger la realidad frente a amenazas sobrenaturales.',
+  },
+  {
+    id: 8,
+    nombre: 'Black Panther',
+    edad: 38,
+    altura: 1.83,
+    urlImagen: '/imagenes/superheroes/black-panther.webp',
+    descripcion:
+      'Rey y protector de Wakanda, combina tecnología avanzada, estrategia y habilidades físicas excepcionales.',
+  },
+  {
+    id: 9,
+    nombre: 'Capitana Marvel',
+    edad: 35,
+    altura: 1.8,
+    urlImagen: '/imagenes/superheroes/capitana-marvel.webp',
+    descripcion:
+      'Heroína de poder cósmico capaz de volar, absorber energía y defender el universo de grandes amenazas.',
+  },
 ];

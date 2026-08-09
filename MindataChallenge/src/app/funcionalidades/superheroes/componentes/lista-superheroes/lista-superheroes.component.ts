@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { debounceTime, distinctUntilChanged, startWith, Subject, switchMap, take } from 'rxjs';
 
 import { MaterialModule } from '../../../../compartido/material/material.module';
@@ -23,9 +24,16 @@ export class ListaSuperheroesComponent {
   private readonly servicioSuperheroes = inject(ServicioSuperheroes);
   private readonly modal = inject(MatDialog);
   private readonly cambiosFiltro = new Subject<string>();
-
   public readonly filtroNombre = signal('');
   public readonly superheroes = this.servicioSuperheroes.superheroes;
+  public readonly indicePagina = signal(0);
+  public readonly cantidadPorPagina = signal(3);
+  public readonly opcionesCantidad = [3, 6, 9];
+  public readonly superheroesPaginados = computed(() => {
+    const inicio = this.indicePagina() * this.cantidadPorPagina();
+    const fin = inicio + this.cantidadPorPagina();
+    return this.superheroes().slice(inicio, fin);
+  });
 
   constructor() {
     this.cambiosFiltro
@@ -46,12 +54,19 @@ export class ListaSuperheroesComponent {
   public actualizarFiltro(evento: Event): void {
     const campoBusqueda = evento.target as HTMLInputElement;
     this.filtroNombre.set(campoBusqueda.value);
+    this.indicePagina.set(0);
     this.cambiosFiltro.next(campoBusqueda.value);
   }
 
   public limpiarFiltro(): void {
     this.filtroNombre.set('');
+    this.indicePagina.set(0);
     this.cambiosFiltro.next('');
+  }
+
+  public cambiarPagina(evento: PageEvent): void {
+    this.indicePagina.set(evento.pageIndex);
+    this.cantidadPorPagina.set(evento.pageSize);
   }
 
   public abrirModalCreacion(): void {
