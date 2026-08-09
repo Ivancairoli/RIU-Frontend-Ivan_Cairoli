@@ -31,13 +31,29 @@
       }
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Ruta de la imagen</mat-label>
-      <input matInput formControlName="urlImagen" />
+    <div class="selector-imagen">
+      <label for="imagen-superheroe">Foto del superhéroe</label>
+      <input
+        id="imagen-superheroe"
+        type="file"
+        accept="image/*"
+        (change)="seleccionarImagen($event)"
+      />
+
       @if (formulario.controls.urlImagen.hasError('required')) {
-        <mat-error>La ruta de la imagen es obligatoria.</mat-error>
+        <span class="error-imagen">La imagen es obligatoria.</span>
       }
-    </mat-form-field>
+      @if (errorImagen()) {
+        <span class="error-imagen">{{ errorImagen() }}</span>
+      }
+      @if (vistaPreviaImagen()) {
+        <img
+          class="vista-previa-imagen"
+          [src]="vistaPreviaImagen()"
+          [alt]="'Vista previa de ' + (formulario.controls.nombre.value || 'superhéroe')"
+        />
+      }
+    </div>
 
     <mat-form-field appearance="outline">
       <mat-label>Descripción</mat-label>
