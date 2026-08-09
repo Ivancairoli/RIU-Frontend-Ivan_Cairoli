@@ -52,6 +52,34 @@ docker run --rm -p 8080:80 --name mindata-challenge mindata-challenge
 
 The image uses Node.js only during compilation. The final image serves the generated static files with Nginx and supports Angular client-side routes.
 
+### Docker Compose
+
+Build and start the application in the background:
+
+```bash
+docker compose up --build -d
+```
+
+The application will be available at `http://localhost:8080`. To use another host port:
+
+```bash
+APP_PORT=4200 docker compose up --build -d
+```
+
+On PowerShell, set the port with:
+
+```powershell
+$env:APP_PORT = 4200
+docker compose up --build -d
+```
+
+Check its status and stop it with:
+
+```bash
+docker compose ps
+docker compose down
+```
+
 ## Running unit tests
 
 To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
