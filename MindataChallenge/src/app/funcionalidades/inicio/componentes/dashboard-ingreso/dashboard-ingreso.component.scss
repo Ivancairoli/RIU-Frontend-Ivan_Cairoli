@@ -1,0 +1,33 @@
+.dashboard-ingreso {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  background-image: url('/imagenes/superheroes/fondo-super.avif');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.contenido-dashboard {
+  width: 35rem;
+  padding: 3rem;
+  text-align: center;
+
+  .titulo-dashboard {
+    margin: 0.5rem 0;
+    font: var(--mat-sys-display-small);
+    font-weight: 700;
+    color: white;
+  }
+
+  .descripcion-dashboard {
+    margin: 0 0 2rem;
+    color: white;
+  }
+}
+
+.etiqueta-dashboard {
+  color: var(--mat-sys-primary);
+  font: var(--mat-sys-label-large);
+  text-transform: uppercase;
+}

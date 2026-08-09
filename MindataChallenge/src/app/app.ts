@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 import { IndicadorCargaComponent } from './compartido/componentes/indicador-carga/indicador-carga.component';
-import { ListaSuperheroesComponent } from './funcionalidades/superheroes/componentes/lista-superheroes/lista-superheroes.component';
 
 @Component({
   selector: 'app-root',
-  imports: [IndicadorCargaComponent, ListaSuperheroesComponent],
+  imports: [IndicadorCargaComponent, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
