@@ -3,9 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: mindata-challenge:latest
     container_name: mindata-challenge
     ports:
-      - "${APP_PORT:-8080}:80"
+      - '${APP_PORT:-8080}:80'
     restart: unless-stopped
-
