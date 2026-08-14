@@ -1,5 +1,6 @@
 @if (servicioCarga.estaCargando()) {
-  <div class="fondo-carga">
-    <mat-spinner diameter="64" />
+  <div class="fondo-carga" role="status" aria-live="polite">
+    <mat-spinner diameter="64" aria-hidden="true" />
+    <p class="texto-carga">Cargando contenido, por favor espere.</p>
   </div>
 }

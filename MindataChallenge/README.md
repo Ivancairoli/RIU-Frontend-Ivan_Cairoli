@@ -60,7 +60,13 @@ Build and start the application in the background:
 docker compose up --build -d
 ```
 
-The application will be available at `http://localhost:8080`. To use another host port:
+By default, Docker Compose maps port `8080` on the host to port `80` in the container (`8080:80`). After starting it, access the application at:
+
+```text
+http://localhost:8080
+```
+
+The host port can be changed through the `APP_PORT` environment variable. For example:
 
 ```bash
 APP_PORT=4200 docker compose up --build -d
