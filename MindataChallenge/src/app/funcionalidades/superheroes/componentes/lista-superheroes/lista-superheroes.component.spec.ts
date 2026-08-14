@@ -1,6 +1,7 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
+import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 
 import { NuevoSuperheroe, Superheroe } from '../../modelos/superheroe.model';
@@ -27,8 +28,9 @@ describe('ListaSuperheroesComponent', () => {
     registrar: jasmine
       .createSpy('registrar')
       .and.callFake((nuevo: NuevoSuperheroe) => of({ id: 5, ...nuevo })),
+    modificarSuperheroe: jasmine.createSpy('modificarSuperheroe'),
+    eliminarSuperheroe: jasmine.createSpy('eliminarSuperheroe'),
   };
-  const modal = { open: jasmine.createSpy('open') };
   const notificaciones = {
     exito: jasmine.createSpy('exito'),
     error: jasmine.createSpy('error'),
@@ -38,27 +40,14 @@ describe('ListaSuperheroesComponent', () => {
     servicio.consultarTodos.calls.reset();
     servicio.consultarPorNombre.calls.reset();
     servicio.registrar.calls.reset();
-    modal.open.calls.reset();
+    servicio.modificarSuperheroe.calls.reset();
+    servicio.eliminarSuperheroe.calls.reset();
     notificaciones.exito.calls.reset();
     notificaciones.error.calls.reset();
     estado.set(superheroes);
-    TestBed.configureTestingModule({
-      imports: [ListaSuperheroesComponent],
-      providers: [
-        { provide: ServicioSuperheroes, useValue: servicio },
-        { provide: MatDialog, useValue: modal },
-        { provide: NotificacionesService, useValue: notificaciones },
-      ],
-    }).overrideComponent(ListaSuperheroesComponent, {
-      set: {
-        template: '',
-        providers: [
-          { provide: ServicioSuperheroes, useValue: servicio },
-          { provide: MatDialog, useValue: modal },
-          { provide: NotificacionesService, useValue: notificaciones },
-        ],
-      },
-    });
+    TestBed.configureTestingModule({ imports: [ListaSuperheroesComponent] });
+    TestBed.overrideProvider(ServicioSuperheroes, { useValue: servicio });
+    TestBed.overrideProvider(NotificacionesService, { useValue: notificaciones });
   });
 
   it('carga la lista y filtra por nombre', async () => {
@@ -87,6 +76,31 @@ describe('ListaSuperheroesComponent', () => {
     expect(componente.superheroesPaginados()).toEqual([superheroes[3]]);
   });
 
+  it('limpia el filtro y vuelve a la primera página', () => {
+    const componente = TestBed.createComponent(ListaSuperheroesComponent).componentInstance;
+    componente.actualizarFiltro({ target: { value: 'Spider' } } as unknown as Event);
+    componente.cambiarPagina({ pageIndex: 1, pageSize: 3, length: 4 });
+
+    componente.limpiarFiltro();
+
+    expect(componente.filtroNombre()).toBe('');
+    expect(componente.indicePagina()).toBe(0);
+  });
+
+  it('renderiza la primera página y abre el alta al hacer clic en el botón', () => {
+    const fixture = TestBed.createComponent(ListaSuperheroesComponent);
+    const abrirModal = simularCierreModal(fixture.componentInstance, undefined);
+    fixture.detectChanges();
+
+    const tarjetas = fixture.debugElement.queryAll(By.css('app-tarjeta-superheroe'));
+    const botonAgregar = fixture.debugElement.query(By.css('.boton-agregar'));
+    botonAgregar.nativeElement.click();
+
+    expect(tarjetas.length).toBe(3);
+    expect(fixture.nativeElement.textContent).toContain('4 héroes disponibles');
+    expect(abrirModal).toHaveBeenCalledTimes(1);
+  });
+
   it('vuelve a la última página válida si se elimina el último elemento de la actual', () => {
     const fixture = TestBed.createComponent(ListaSuperheroesComponent);
     const componente = fixture.componentInstance;
@@ -98,6 +112,7 @@ describe('ListaSuperheroesComponent', () => {
 
     expect(componente.indicePagina()).toBe(0);
     expect(componente.superheroesPaginados()).toEqual(superheroes.slice(0, 3));
+    expect(fixture.debugElement.queryAll(By.css('app-tarjeta-superheroe')).length).toBe(3);
   });
 
   it('debería registrar el resultado del modal de creación', () => {
@@ -108,13 +123,23 @@ describe('ListaSuperheroesComponent', () => {
       urlImagen: '/batman.webp',
       descripcion: 'Detective',
     };
-    modal.open.and.returnValue({ afterClosed: () => of(nuevo) });
     const componente = TestBed.createComponent(ListaSuperheroesComponent).componentInstance;
+    const abrirModal = simularCierreModal(componente, nuevo);
 
     componente.abrirModalCreacion();
 
-    expect(modal.open).toHaveBeenCalledTimes(1);
+    expect(abrirModal).toHaveBeenCalledTimes(1);
     expect(servicio.registrar).toHaveBeenCalledWith(nuevo);
     expect(notificaciones.exito).toHaveBeenCalledWith('Superhéroe creado correctamente.');
   });
+
+  function simularCierreModal(
+    componente: ListaSuperheroesComponent,
+    resultado: NuevoSuperheroe | undefined,
+  ): jasmine.Spy {
+    const dialogo = (componente as unknown as { modal: MatDialog }).modal;
+    return spyOn(dialogo, 'open').and.returnValue({
+      afterClosed: () => of(resultado),
+    } as ReturnType<MatDialog['open']>);
+  }
 });

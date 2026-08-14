@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "test:coverage": "ng test --watch=false --browsers=ChromeHeadlessCI --coverage --coverage-reporters=text-summary --coverage-reporters=html"
   },
   "private": true,
   "packageManager": "npm@10.8.2",

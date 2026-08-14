@@ -111,6 +111,14 @@ describe('ServicioSuperheroes', () => {
     expect(servicio.superheroes()).toEqual([modificado]);
   });
 
+  it('devuelve null si el superhéroe a modificar no existe', () => {
+    servicio.modificarSuperheroe(superheroe).subscribe((resultado) => expect(resultado).toBeNull());
+
+    http
+      .expectOne('api/superheroes/1')
+      .flush(null, { status: 404, statusText: 'Not Found' });
+  });
+
   it('elimina un superhéroe existente del estado', () => {
     servicio.consultarTodos().subscribe();
     http.expectOne('api/superheroes').flush([superheroe]);
@@ -121,5 +129,13 @@ describe('ServicioSuperheroes', () => {
     peticion.flush(null);
 
     expect(servicio.superheroes()).toEqual([]);
+  });
+
+  it('devuelve false si el superhéroe a eliminar no existe', () => {
+    servicio.eliminarSuperheroe(99).subscribe((eliminado) => expect(eliminado).toBeFalse());
+
+    http
+      .expectOne('api/superheroes/99')
+      .flush(null, { status: 404, statusText: 'Not Found' });
   });
 });
