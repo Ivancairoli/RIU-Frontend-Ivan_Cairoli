@@ -40,7 +40,10 @@
         (change)="seleccionarImagen($event)"
       />
 
-      @if (formulario.controls.urlImagen.hasError('required')) {
+      @if (
+        formulario.controls.urlImagen.hasError('required') &&
+        (formulario.controls.urlImagen.touched || formulario.controls.urlImagen.dirty)
+      ) {
         <span class="error-imagen">La imagen es obligatoria.</span>
       }
       @if (errorImagen()) {

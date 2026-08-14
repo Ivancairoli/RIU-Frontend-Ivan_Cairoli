@@ -36,6 +36,20 @@ describe('ServicioSuperheroes', () => {
     expect(servicio.superheroes()).toEqual([superheroe]);
   });
 
+  it('conserva el último estado si falla la consulta de todos los superhéroes', () => {
+    servicio.consultarTodos().subscribe();
+    http.expectOne('api/superheroes').flush([superheroe]);
+
+    servicio
+      .consultarTodos()
+      .subscribe((resultado) => expect(resultado).toEqual([superheroe]));
+    http
+      .expectOne('api/superheroes')
+      .flush(null, { status: 500, statusText: 'Internal Server Error' });
+
+    expect(servicio.superheroes()).toEqual([superheroe]);
+  });
+
   it('consulta un superhéroe por id y devuelve null si no existe', () => {
     servicio.consultarPorId(1).subscribe((resultado) => expect(resultado).toEqual(superheroe));
     http.expectOne('api/superheroes/1').flush(superheroe);
@@ -51,6 +65,20 @@ describe('ServicioSuperheroes', () => {
       (request) => request.url === 'api/superheroes' && request.params.get('nombre') === 'man',
     );
     peticion.flush([superheroe]);
+
+    expect(servicio.superheroes()).toEqual([superheroe]);
+  });
+
+  it('conserva el último estado si falla la consulta por nombre', () => {
+    servicio.consultarTodos().subscribe();
+    http.expectOne('api/superheroes').flush([superheroe]);
+
+    servicio
+      .consultarPorNombre('Spider')
+      .subscribe((resultado) => expect(resultado).toEqual([superheroe]));
+    http
+      .expectOne((request) => request.params.get('nombre') === 'Spider')
+      .flush(null, { status: 500, statusText: 'Internal Server Error' });
 
     expect(servicio.superheroes()).toEqual([superheroe]);
   });

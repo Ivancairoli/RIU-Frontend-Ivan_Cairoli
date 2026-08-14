@@ -26,7 +26,10 @@ export class ServicioSuperheroes implements IAdministrarSuperheroes {
   public consultarTodos(): Observable<readonly Superheroe[]> {
     return this.http
       .get<Superheroe[]>(this.urlApi)
-      .pipe(tap((superheroes) => this.estadoSuperheroes.set(superheroes)));
+      .pipe(
+        tap((superheroes) => this.estadoSuperheroes.set(superheroes)),
+        catchError(() => of(this.estadoSuperheroes())),
+      );
   }
 
   public consultarPorId(id: number): Observable<Superheroe | null> {
@@ -44,7 +47,10 @@ export class ServicioSuperheroes implements IAdministrarSuperheroes {
 
     return this.http
       .get<Superheroe[]>(this.urlApi, { params: parametros })
-      .pipe(tap((superheroes) => this.estadoSuperheroes.set(superheroes)));
+      .pipe(
+        tap((superheroes) => this.estadoSuperheroes.set(superheroes)),
+        catchError(() => of(this.estadoSuperheroes())),
+      );
   }
 
   public modificarSuperheroe(superheroe: Superheroe): Observable<Superheroe | null> {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { take } from 'rxjs';
+import { filter, switchMap, take } from 'rxjs';
 import { MaterialModule } from '../../../../compartido/material/material.module';
 import { NotificacionesService } from '../../../../compartido/servicios/notificaciones.service';
 import { Superheroe } from '../../modelos/superheroe.model';
@@ -36,20 +36,19 @@ export class TarjetaSuperheroeComponent {
 
     referenciaModal
       .afterClosed()
-      .pipe(take(1))
-      .subscribe((resultado) => {
-        if (resultado && 'id' in resultado) {
-          this.servicioSuperheroes
-            .modificarSuperheroe(resultado)
-            .pipe(take(1))
-            .subscribe({
-              next: (modificado) =>
-                modificado
-                  ? this.notificaciones.exito('Superhéroe editado correctamente.')
-                  : this.notificaciones.error('No se pudo editar el superhéroe.'),
-              error: () => this.notificaciones.error('No se pudo editar el superhéroe.'),
-            });
-        }
+      .pipe(
+        take(1),
+        filter(
+          (resultado): resultado is Superheroe => !!resultado && 'id' in resultado,
+        ),
+        switchMap((resultado) => this.servicioSuperheroes.modificarSuperheroe(resultado)),
+      )
+      .subscribe({
+        next: (modificado) =>
+          modificado
+            ? this.notificaciones.exito('Superhéroe editado correctamente.')
+            : this.notificaciones.error('No se pudo editar el superhéroe.'),
+        error: () => this.notificaciones.error('No se pudo editar el superhéroe.'),
       });
   }
 
@@ -64,20 +63,17 @@ export class TarjetaSuperheroeComponent {
 
     referenciaModal
       .afterClosed()
-      .pipe(take(1))
-      .subscribe((confirmado) => {
-        if (confirmado) {
-          this.servicioSuperheroes
-            .eliminarSuperheroe(id)
-            .pipe(take(1))
-            .subscribe({
-              next: (eliminado) =>
-                eliminado
-                  ? this.notificaciones.exito('Superhéroe eliminado correctamente.')
-                  : this.notificaciones.error('No se pudo eliminar el superhéroe.'),
-              error: () => this.notificaciones.error('No se pudo eliminar el superhéroe.'),
-            });
-        }
+      .pipe(
+        take(1),
+        filter((confirmado): confirmado is true => confirmado === true),
+        switchMap(() => this.servicioSuperheroes.eliminarSuperheroe(id)),
+      )
+      .subscribe({
+        next: (eliminado) =>
+          eliminado
+            ? this.notificaciones.exito('Superhéroe eliminado correctamente.')
+            : this.notificaciones.error('No se pudo eliminar el superhéroe.'),
+        error: () => this.notificaciones.error('No se pudo eliminar el superhéroe.'),
       });
   }
 }

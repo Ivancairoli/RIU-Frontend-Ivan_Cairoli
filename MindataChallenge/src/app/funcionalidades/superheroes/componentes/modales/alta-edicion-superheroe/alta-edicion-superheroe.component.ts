@@ -36,6 +36,7 @@ export class AltaEdicionSuperheroeComponent {
   public seleccionarImagen(evento: Event): void {
     const selector = evento.target as HTMLInputElement;
     const archivo = selector.files?.[0];
+    this.formulario.controls.urlImagen.markAsTouched();
 
     if (!archivo) {
       return;

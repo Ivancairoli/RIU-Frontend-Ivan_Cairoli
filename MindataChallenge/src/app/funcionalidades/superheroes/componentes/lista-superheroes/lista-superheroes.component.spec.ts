@@ -87,6 +87,19 @@ describe('ListaSuperheroesComponent', () => {
     expect(componente.superheroesPaginados()).toEqual([superheroes[3]]);
   });
 
+  it('vuelve a la última página válida si se elimina el último elemento de la actual', () => {
+    const fixture = TestBed.createComponent(ListaSuperheroesComponent);
+    const componente = fixture.componentInstance;
+    componente.cambiarPagina({ pageIndex: 1, pageSize: 3, length: 4 });
+    fixture.detectChanges();
+
+    estado.set(superheroes.slice(0, 3));
+    fixture.detectChanges();
+
+    expect(componente.indicePagina()).toBe(0);
+    expect(componente.superheroesPaginados()).toEqual(superheroes.slice(0, 3));
+  });
+
   it('debería registrar el resultado del modal de creación', () => {
     const nuevo: NuevoSuperheroe = {
       nombre: 'Batman',

@@ -1,12 +1,20 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { debounceTime, distinctUntilChanged, startWith, Subject, switchMap, take } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  startWith,
+  Subject,
+  switchMap,
+  take,
+} from 'rxjs';
 
 import { MaterialModule } from '../../../../compartido/material/material.module';
 import { NotificacionesService } from '../../../../compartido/servicios/notificaciones.service';
-import { Superheroe } from '../../modelos/superheroe.model';
+import { NuevoSuperheroe, Superheroe } from '../../modelos/superheroe.model';
 import { ServicioSuperheroes } from '../../servicios/superheroes.service';
 import {
   AltaEdicionSuperheroeComponent,
@@ -38,6 +46,17 @@ export class ListaSuperheroesComponent {
   });
 
   constructor() {
+    effect(() => {
+      const ultimaPagina = Math.max(
+        Math.ceil(this.superheroes().length / this.cantidadPorPagina()) - 1,
+        0,
+      );
+
+      if (this.indicePagina() > ultimaPagina) {
+        this.indicePagina.set(ultimaPagina);
+      }
+    });
+
     this.cambiosFiltro
       .pipe(
         startWith(''),
@@ -80,17 +99,17 @@ export class ListaSuperheroesComponent {
 
     referenciaModal
       .afterClosed()
-      .pipe(take(1))
-      .subscribe((resultado) => {
-        if (resultado && !this.esSuperheroeExistente(resultado)) {
-          this.servicioSuperheroes
-            .registrar(resultado)
-            .pipe(take(1))
-            .subscribe({
-              next: () => this.notificaciones.exito('Superhéroe creado correctamente.'),
-              error: () => this.notificaciones.error('No se pudo crear el superhéroe.'),
-            });
-        }
+      .pipe(
+        take(1),
+        filter(
+          (resultado): resultado is NuevoSuperheroe =>
+            !!resultado && !this.esSuperheroeExistente(resultado),
+        ),
+        switchMap((resultado) => this.servicioSuperheroes.registrar(resultado)),
+      )
+      .subscribe({
+        next: () => this.notificaciones.exito('Superhéroe creado correctamente.'),
+        error: () => this.notificaciones.error('No se pudo crear el superhéroe.'),
       });
   }
 

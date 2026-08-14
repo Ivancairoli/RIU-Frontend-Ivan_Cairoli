@@ -11,5 +11,5 @@ import { ServicioCarga } from '../../servicios/carga.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class IndicadorCargaComponent {
-  public readonly servicioCarga = inject(ServicioCarga);
+  protected readonly servicioCarga = inject(ServicioCarga);
 }
